@@ -9,7 +9,17 @@ export async function POST({ request }){
 
   const user = {
     username,
-    password
+    password,
+    daily: {
+        calories: 0,
+        max_calories: 0,
+        carb: 0,
+        max_carb: 0,
+        fat: 0,
+        max_fat: 0,
+        protein: 0,
+        max_protein: 0
+    }
   };
 
   //db things

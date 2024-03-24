@@ -12,13 +12,13 @@ export async function POST({ request }){
     password,
     daily: {
         calories: 0,
-        max_calories: 0,
+        max_calories: 1000,
         carb: 0,
-        max_carb: 0,
+        max_carb: 5,
         fat: 0,
-        max_fat: 0,
+        max_fat: 5,
         protein: 0,
-        max_protein: 0
+        max_protein: 5
     }
   };
 

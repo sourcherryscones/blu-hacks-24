@@ -2,4 +2,6 @@
   import "../app.css";
 </script>
 
-<slot />
+<div class="flex flex-col gap-2 p-4 items-center">
+  <slot />
+</div>

@@ -1,3 +1,4 @@
+import { error } from '@sveltejs/kit';
 import db from '$lib/db.js';
 
 const users = db.collection("users");

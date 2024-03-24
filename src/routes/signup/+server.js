@@ -1,6 +1,6 @@
 import db from '$lib/db.js';
 
-const coll = db.collection("users");
+const users = db.collection("users");
 
 
 export async function POST({ request }){
@@ -12,7 +12,10 @@ export async function POST({ request }){
   };
 
   //db things
-  const res = await coll.insertOne(user);
+  if (await users.findOne({ username })) 
+    error(400, `user ${username} already exists`);
+
+  const res = await users.insertOne(user);
   console.log(res);
 
   return new Response('signed up');

@@ -11,7 +11,11 @@ export async function load ({ cookies, url }) {
   }
   
   if (!session) {
-    throw redirect(307, '/login');
+    if (url.pathname != '/login' && url.pathname != '/signup') {
+      throw redirect(307, '/login');
+    }
+  } else {
+    return {};
   }
 
   const username = cookies.get('session');

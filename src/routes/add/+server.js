@@ -17,9 +17,7 @@ export async function GET ({ url }) {
       'x-app-id': '156b682d',
       'x-app-key': '04ce01540559c05dbe12627096b063d2'
     },
-    body: JSON.stringify({
-      "query": "two small bagels"
-    })
+    body: JSON.stringify({ query })
   })
 
   if (res.status !== 200) {

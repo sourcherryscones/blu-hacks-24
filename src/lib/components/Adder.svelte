@@ -5,6 +5,7 @@
 
   async function get () {
 
+    console.log(query);
     const res = await fetch(`/add?query=${query}`)
 
     if (res.status !== 200) {

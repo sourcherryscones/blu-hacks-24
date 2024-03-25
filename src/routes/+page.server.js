@@ -15,8 +15,9 @@ export async function load ({ cookies }) {
   const username = cookies.get('session');
   const o = await users.findOne({username});
   //console.log(o)
-  const {max_calories, max_protein, max_fat, max_carb, calories, protein, fat, carb} = o.daily;
+  const {max_calories, max_protein, max_fat, max_carb, calories, protein, fat, carb, water} = o.daily;
   return {
+    username,
     user: {
       max_calories,
       max_protein,
@@ -25,7 +26,8 @@ export async function load ({ cookies }) {
       calories,
       protein,
       carb,
-      fat
+      fat,
+      water
     }
   }
 }

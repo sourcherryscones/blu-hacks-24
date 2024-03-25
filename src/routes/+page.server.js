@@ -6,15 +6,15 @@ const users = db.collection("users");
 export async function load ({ cookies }) {
   const session = cookies.get('session');
 
-  console.log(session);
+  //console.log(session);
   if (!session) {
-    console.log('redirect')
+    //console.log('redirect')
     throw redirect(307, '/login');
   }
 
   const username = cookies.get('session');
   const o = await users.findOne({username});
-  console.log(o)
+  //console.log(o)
   const {max_calories, max_protein, max_fat, max_carb, calories, protein, fat, carb} = o.daily;
   return {
     user: {

@@ -18,7 +18,8 @@ export async function POST({ request }){
         fat: 0,
         max_fat: 5,
         protein: 0,
-        max_protein: 5
+        max_protein: 5,
+        water: 0
     }
   };
 

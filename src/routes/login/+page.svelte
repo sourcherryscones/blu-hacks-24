@@ -21,9 +21,11 @@
   }
 </script>
 
-<input class="input input-bordered" name="username" placeholder="username" bind:value={username}>
-<input type="password" class="input input-bordered" name="password" placeholder="password" bind:value={password}>
+<div class="flex flex-col gap-2 p-4 items-center">
+  <input class="input input-bordered" name="username" placeholder="username" bind:value={username}>
+  <input type="password" class="input input-bordered" name="password" placeholder="password" bind:value={password}>
 
-<button class="btn" on:click={login}>Log In</button>
+  <button class="btn" on:click={login}>Log In</button>
 
-<p>Not a user? sign up <a class="text-sky-600" href="../signup">here</a></p>
+  <p>Not a user? sign up <a class="text-sky-600" href="../signup">here</a></p>
+</div>

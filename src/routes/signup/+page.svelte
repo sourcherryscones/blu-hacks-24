@@ -37,25 +37,27 @@
 
 </script>
 
-<input class="input input-bordered" name="username" placeholder="username" bind:value={username}>
-<input type="password" class="input input-bordered" name="password" placeholder="password" bind:value={password}>
-<input placeholder="weight(lbs)" class="input input-bordered" name="weight" bind:value={weight}>
-<input placeholder="height(ft)" class="input input-bordered" name="height" bind:value={height}>
+<div class="flex flex-col gap-2 p-4 items-center">
+  <input class="input input-bordered" name="username" placeholder="username" bind:value={username}>
+  <input type="password" class="input input-bordered" name="password" placeholder="password" bind:value={password}>
+  <input placeholder="weight(lbs)" class="input input-bordered" name="weight" bind:value={weight}>
+  <input placeholder="height(ft)" class="input input-bordered" name="height" bind:value={height}>
 
-<span class="label-text">Select your activity level</span>
-<select class="select select-bordered" bind:value={activity_level}>
-  {#each activity_levels as a}
-    <option value={a}>{a}</option>
-  {/each}
-</select>
+  <span class="label-text">Select your activity level</span>
+  <select class="select select-bordered" bind:value={activity_level}>
+    {#each activity_levels as a}
+      <option value={a}>{a}</option>
+    {/each}
+  </select>
 
-<span class="label-text">Select your goal</span>
-<select class="select select-bordered" bind:value={goal}>
+  <span class="label-text">Select your goal</span>
+  <select class="select select-bordered" bind:value={goal}>
 
-  {#each goals as g}
-    <option value={g}>{g}</option>
-  {/each}
-</select>
+    {#each goals as g}
+      <option value={g}>{g}</option>
+    {/each}
+  </select>
 
-<button class="btn m-4" on:click={signup}>Sign up</button>
+  <button class="btn m-4" on:click={signup}>Sign up</button>
+</div>
 

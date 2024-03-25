@@ -55,15 +55,15 @@ export async function POST ({ request, cookies }) {
   const { measure, name, cal, prot, carb, fat } = await request.json();
 
   const incs = {
-    'daily.fat': fat * measure.weight,
-    'daily.cal': cal * measure.weight,
-    'daily.prot': prot * measure.weight,
-    'daily.carb': carb * measure.weight,
+    'daily.fat': Math.round(fat * measure.weight),
+    'daily.calories': Math.round(cal * measure.weight),
+    'daily.protein': Math.round(prot * measure.weight),
+    'daily.carb': Math.round(carb * measure.weight),
   }
 
   const res = await users.updateOne({ username }, {
     $inc: incs,
-    $push: { 'daily.foods': { name, quantity: measure.text, cal: incs.cal } }
+    $push: { 'daily.foods': { name, quantity: measure.text, cal: incs['daily.calories'] } }
   });
 
   if (res.modifiedCount != 1) 

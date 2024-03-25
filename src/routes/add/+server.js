@@ -1,16 +1,14 @@
-import { error } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 import db from '$lib/db.js';
 
 const users = db.collection("users");
 
 
 export async function GET ({ url }) {
-  const query = url.searchParams.get('query');
+  const query = (url.searchParams.get('query') ?? "").trim();
   
   if (!query)
     error(400, "bad query");
-
-  query = query.trim();
 
   const res = await fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', {
     'method': 'POST',
@@ -23,16 +21,15 @@ export async function GET ({ url }) {
       "query": "two small bagels"
     })
   })
-    .then(res => res.json());
 
-  if (res.status !== 200)
-    error(400, "Nutritionix request failed");
+  if (res.status !== 200) {
+    const { message } = await res.json();
+    error(400, `Nutritionix request failed with: ${message}`);
+  }
 
-  console.log(res);
-
-  const o = res.foods[0];
+  const o = (await res.json()).foods[0];
   const { 
-    alt_measures: measures,
+    alt_measures,
     food_name: name,
     serving_weight_grams: unit,
     nf_calories: cal,
@@ -41,36 +38,36 @@ export async function GET ({ url }) {
     nf_total_fat: fat,
   } = o;
 
-  measures = measures.map(i => { return { weight: i.serving_weight, text: `${i.qty} ${i.measure}` } }) 
+  const measures = alt_measures.map(i => { return { weight: i.serving_weight, text: `${i.qty} ${i.measure}` } }) 
   
-  return {
+  return json({
     measures,
     name,
     cal: cal/unit,
     prot: prot/unit,
     carb: carb/unit,
     fat: fat/unit
-  };
+  });
 }
 
 export async function POST ({ request, cookies }) {
   const username = cookies.get('session');
-  const { measure, name, cal, prot, carb, fat } = request.json();
+  const { measure, name, cal, prot, carb, fat } = await request.json();
 
   const incs = {
-    fat: fat * measure.weight,
-    cal: cal * measure.weight,
-    prot: prot * measure.weight,
-    carb: carb * measure.weight,
+    'daily.fat': fat * measure.weight,
+    'daily.cal': cal * measure.weight,
+    'daily.prot': prot * measure.weight,
+    'daily.carb': carb * measure.weight,
   }
 
-  const res = await users.replaceOne({ username }, {
+  const res = await users.updateOne({ username }, {
     $inc: incs,
-    $push: { foods: name }
+    $push: { 'daily.foods': { name, quantity: measure.text, cal: incs.cal } }
   });
 
   if (res.modifiedCount != 1) 
     error(500, 'mongo update failed');
 
-  return Response('updated');
+  return new Response('updated');
 }

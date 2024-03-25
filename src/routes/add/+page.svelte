@@ -4,19 +4,37 @@
   let measureIndex;
 
   async function get () {
-    document.getElementById('modal').show();
 
     const res = await fetch(`/add?query=${query}`)
-      .then(res => res.json());
 
     if (res.status !== 200) {
-      alert("bad query.");
+      const { message } = await res.json();
+      alert(message);
       return;
     } 
-    data = res;
+    data = await res.json();
+
+    document.getElementById('modal').show();
   }
 
   async function submit () {
+    data.measure = data.measures[measureIndex];
+
+    const res = await fetch(`/add`, {
+      method:"POST",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (res.status !== 200) {
+      const { message } = await res.json();
+      alert(message);
+      return;
+    }
+    data = undefined;
+
+    document.getElementById('modal').close();
   }
 </script>
 
